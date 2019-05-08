@@ -17,10 +17,13 @@ public class GalagaGame extends JPanel implements KeyListener {
 
 	private ArrayList sprites = new ArrayList();
 	private Sprite starship;
-
+	
+	private BufferedImage BossImage;
 	private BufferedImage alienImage;
 	private BufferedImage shotImage;
 	private BufferedImage shipImage;
+	private BufferedImage NaImage;
+
 
 	public GalagaGame() {
 		JFrame frame = new JFrame("Galaga Game");
@@ -35,6 +38,8 @@ public class GalagaGame extends JPanel implements KeyListener {
 			shotImage = ImageIO.read(new File("fire.png"));
 			shipImage = ImageIO.read(new File("starship.png"));
 			alienImage = ImageIO.read(new File("alien.png"));
+			NaImage = ImageIO.read(new File("Na.png"));
+			BossImage = ImageIO.read(new File("anan.jpg"));
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -46,12 +51,19 @@ public class GalagaGame extends JPanel implements KeyListener {
 	}
 
 	private void initSprites() {
-		starship = new StarShipSprite(this, shipImage, 370, 550);
+		starship = new StarShipSprite(this, shipImage, 370, 550);          
 		sprites.add(starship);
 		for (int y = 0; y < 5; y++) {
 			for (int x = 0; x < 12; x++) {
 				Sprite alien = new AlienSprite(this, alienImage, 100 + (x * 50), (50) + y * 30);
+				Sprite Na = new AlienSprite(this, NaImage, 1 + (x * 60), (60) + y * 30);
 				sprites.add(alien);
+				sprites.add(Na);
+				
+				Sprite Boss = new AlienSprite(this, BossImage, 2500 + (x * 0), (1) + y * 1);
+				sprites.add(Boss);
+				
+				
 			}
 		}
 	}
@@ -70,8 +82,15 @@ public class GalagaGame extends JPanel implements KeyListener {
 	}
 
 	public void fire() {
-		ShotSprite shot = new ShotSprite(this, shotImage, starship.getX() + 10, starship.getY() - 30);
+		ShotSprite shot = new ShotSprite(this, shotImage, starship.getX() + 1, starship.getY() - 30);
+		ShotSprite shot1 = new ShotSprite(this, shotImage, starship.getX() + 10, starship.getY() - 30); // ÃÑ¾Ë º¹ºÙ
+		ShotSprite shot2 = new ShotSprite(this, shotImage, starship.getX() + 12, starship.getY() - 50); // ÃÑ¾Ë º¹ºÙ
+		ShotSprite shot3 = new ShotSprite(this, shotImage, starship.getX() + 8, starship.getY() - 50); // ÃÑ¾Ë º¹ºÙ
 		sprites.add(shot);
+		sprites.add(shot1);
+		sprites.add(shot2);
+		sprites.add(shot3);
+		
 	}
 
 	@Override
