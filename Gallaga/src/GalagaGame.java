@@ -1,14 +1,23 @@
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
 public class GalagaGame extends JPanel implements KeyListener {
@@ -23,23 +32,51 @@ public class GalagaGame extends JPanel implements KeyListener {
 	private BufferedImage shotImage;
 	private BufferedImage shipImage;
 	private BufferedImage NaImage;
-
+	private BufferedImage Boss1Image;
+	private BufferedImage boomImage;
+	
+	
+	
 
 	public GalagaGame() {
 		JFrame frame = new JFrame("Galaga Game");
-
+		
+		/*JButton a = new JButton("다시 시작하기~~~");
+		a.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JButton z = (JButton)e.getSource();
+				JDialog aaa = new JDialog(frame);
+				if(z.getText().equals("다시 시작하기~~~")){
+					sprites.clear();
+					initSprites();
+					z.setText("다시빠꾸");
+				}else if(z.getText().equals("다시빠꾸")){
+					z.setVisible(false);
+				}
+			}
+		});
+		
+		a.setPreferredSize(new Dimension(150, 30));
+		JMenuBar n = new JMenuBar();
+		n.add(a);
+		frame.setJMenuBar(n);*/
+		
 		frame.setSize(800, 600);
 		frame.add(this);
 		frame.setResizable(false);
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+		
 
+		
+		
 		try {
 			shotImage = ImageIO.read(new File("fire.png"));
 			shipImage = ImageIO.read(new File("starship.png"));
 			alienImage = ImageIO.read(new File("alien.png"));
-			NaImage = ImageIO.read(new File("Na.png"));
 			BossImage = ImageIO.read(new File("anan.jpg"));
+			Boss1Image = ImageIO.read(new File("images.jpg"));
+			boomImage = ImageIO.read(new File("mmm.jpg"));
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -52,27 +89,36 @@ public class GalagaGame extends JPanel implements KeyListener {
 
 	private void initSprites() {
 		starship = new StarShipSprite(this, shipImage, 370, 550);          
-		sprites.add(starship);
+		sprites.add(starship);  
 		for (int y = 0; y < 5; y++) {
 			for (int x = 0; x < 12; x++) {
 				Sprite alien = new AlienSprite(this, alienImage, 100 + (x * 50), (50) + y * 30);
-				Sprite Na = new AlienSprite(this, NaImage, 1 + (x * 60), (60) + y * 30);
 				sprites.add(alien);
-				sprites.add(Na);
 				
-				Sprite Boss = new AlienSprite(this, BossImage, 2500 + (x * 0), (1) + y * 1);
+				Sprite Boss = new AlienSprite(this, BossImage, 450 + (x * 0), (0) + y * 0);
 				sprites.add(Boss);
 				
+				Sprite Boss1 = new AlienSprite(this, Boss1Image, 0 + (x * 0), (0) + y * 0);
+				sprites.add(Boss1);
 				
 			}
 		}
 	}
+	
+/*	private void board(){
+		
+	}*/
 
 	private void startGame() {
 		sprites.clear();
 		initSprites();
 	}
-
+	
+	public void start() {
+		sprites.clear();
+		initSprites();
+	}
+	
 	public void endGame() {
 		System.exit(0);
 	}
@@ -84,19 +130,18 @@ public class GalagaGame extends JPanel implements KeyListener {
 	public void fire() {
 		ShotSprite shot = new ShotSprite(this, shotImage, starship.getX() + 1, starship.getY() - 30);
 		ShotSprite shot1 = new ShotSprite(this, shotImage, starship.getX() + 10, starship.getY() - 30); // 총알 복붙
-		ShotSprite shot2 = new ShotSprite(this, shotImage, starship.getX() + 12, starship.getY() - 50); // 총알 복붙
-		ShotSprite shot3 = new ShotSprite(this, shotImage, starship.getX() + 8, starship.getY() - 50); // 총알 복붙
+		/*ShotSprite shot2 = new ShotSprite(this, shotImage, starship.getX() + 7, starship.getY() - 50); // 총알 복붙
+*/		
 		sprites.add(shot);
 		sprites.add(shot1);
-		sprites.add(shot2);
-		sprites.add(shot3);
+		/*sprites.add(shot2);*/
 		
 	}
 
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		g.setColor(Color.black);
+		/*g.setColor(Color.CYAN);*/
 		g.fillRect(0, 0, 800, 600);
 		for (int i = 0; i < sprites.size(); i++) {
 			Sprite sprite = (Sprite) sprites.get(i);
@@ -134,20 +179,40 @@ public class GalagaGame extends JPanel implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_LEFT)
-			starship.setDx(-3);
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-			starship.setDx(+3);
+		if (e.getKeyCode() == KeyEvent.VK_A)
+			starship.setDx(-5);
+		if (e.getKeyCode() == KeyEvent.VK_D)
+			starship.setDx(+5);
+		if (e.getKeyCode() == KeyEvent.VK_W)
+			starship.setDy(-5);
+		if (e.getKeyCode() == KeyEvent.VK_S)
+			starship.setDy(+5);
+		if (e.getKeyCode() == KeyEvent.VK_R)
+			start();
+		if (e.getKeyCode() == KeyEvent.VK_1){
+			ShotSprite shot = new ShotSprite(this, boomImage, starship.getX() + -120, starship.getY() - 30);
+			ShotSprite shot1 = new ShotSprite(this, boomImage, starship.getX() + 0, starship.getY() - 30);
+			ShotSprite shot2 = new ShotSprite(this, boomImage, starship.getX() + 120, starship.getY() - 30); // 총알 복붙
+			sprites.add(shot);
+			sprites.add(shot1);
+			sprites.add(shot2);
+		}
+			
+			 
 		if (e.getKeyCode() == KeyEvent.VK_SPACE)
 			fire();
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_LEFT)
+		if (e.getKeyCode() == KeyEvent.VK_A)
 			starship.setDx(0);
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+		if (e.getKeyCode() == KeyEvent.VK_D)
 			starship.setDx(0);
+		if (e.getKeyCode() == KeyEvent.VK_W)
+			starship.setDy(0);
+		if (e.getKeyCode() == KeyEvent.VK_S)
+			starship.setDy(0);
 	}
 
 	@Override
