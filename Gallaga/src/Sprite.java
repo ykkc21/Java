@@ -73,12 +73,12 @@ public class Sprite {
 		Rectangle otherRect = new Rectangle();
 		myRect.setBounds(x, y, getWidth(), getHeight());
 		otherRect.setBounds(other.getX(), other.getY(), other.getWidth(), other.getHeight());
-
+		
 		return myRect.intersects(otherRect);
 	}
 
 	// 충돌을 처리한다.
 	public void handleCollision(Sprite other) {
-
+	
 	}
 }

@@ -9,13 +9,21 @@ public class StarShipSprite extends Sprite {
 		dx = 0;
 		dy = 0;
 	}
+	
+	
 
 	@Override
 	public void move() {
 		if ((dx < 0) && (x < 10)) {
 			return;
 		}
-		if ((dx > 0) && (x > 800)) {
+		if ((dx > 0) && (x > 760)) {
+			return;
+		}
+		if ((dy < 0) && (y < 10)) {
+			return;
+		}
+		if ((dy > 0) && (y > 530)) {
 			return;
 		}
 		super.move();
@@ -24,8 +32,9 @@ public class StarShipSprite extends Sprite {
 	@Override
 	public void handleCollision(Sprite other) {
 		if (other instanceof AlienSprite) {
-			game.start();
-			/*game.endGame();*/
+			
+			/*game.start();*/
+			game.endGame();
 		}
 	}
 }

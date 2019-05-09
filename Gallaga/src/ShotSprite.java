@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.awt.Image;
 
 public class ShotSprite extends Sprite {
@@ -7,7 +8,7 @@ public class ShotSprite extends Sprite {
 	public ShotSprite(GalagaGame game, Image image, int x, int y) {
 		super(image, x, y);
 		this.game = game;
-		dy = -3;
+		dy = -7;
 	}
 
 	@Override
@@ -17,13 +18,14 @@ public class ShotSprite extends Sprite {
 			game.removeSprite(this);
 		}
 	}
-
+ 
 	@Override
 	public void handleCollision(Sprite other) {
 
 		if (other instanceof AlienSprite) {
-			game.removeSprite(this);
-			game.removeSprite(other);
+			game.removeSprite(this); // 지우면 맞아도 총알 안사라짐 
+			game.removeSprite(other); // 지우면 맞아도 괴물 안사라짐
 		}
+		
 	}
 }
